@@ -11,9 +11,8 @@ namespace BangazonSite.Models
         [Required]
         public ApplicationUser User { get; set; }
 
-        [Required]
         [Display(Name = "Payment Type")]
-        public int PaymentTypeId { get; set; }
+        public int ? PaymentTypeId { get; set; }
 
         public PaymentType PaymentType { get; set; }
 

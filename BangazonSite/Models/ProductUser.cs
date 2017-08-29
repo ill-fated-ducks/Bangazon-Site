@@ -18,6 +18,9 @@ namespace BangazonSite.Models
         public ApplicationUser User { get; set; }
 
         [Required]
+        public int Rating { get; set; }
+
+        [Required]
         public Product Product { get; set; }
     }
 }

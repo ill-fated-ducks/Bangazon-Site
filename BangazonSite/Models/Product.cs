@@ -28,7 +28,7 @@ namespace BangazonSite.Models
         public string ImagePath { get; set; }
 
         [Required]
-        [StringLength(55, ErrorMessage = "Please shorten the product title to 55 characters")]
+        [StringLength(55, ErrorMessage = "Please shorten the city name to 55 characters")]
         public string LocalDeliveryCity { get; set; }
 
         [Required]
