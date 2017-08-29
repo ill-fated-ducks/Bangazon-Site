@@ -24,73 +24,73 @@ namespace BangazonSite.Data
                     context.ApplicationUser.AddRange(
                         new ApplicationUser
                         {
-                            FirstName: "John",
-                            LastName: "Wayne",
-                            Address: "somewhere out there",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "John",
+                            LastName = "Wayne",
+                            Address = "somewhere out there",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Jimmy",
-                            LastName: "Dean",
-                            Address: "somewhere out here",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37212,
-                            Phone: 615-555-5050
+                            FirstName = "Jimmy",
+                            LastName = "Dean",
+                            Address = "somewhere out here",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37212",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Jacques",
-                            LastName: "Cousteau",
-                            Address: "still out there",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "Jacques",
+                            LastName = "Cousteau",
+                            Address = "still out there",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Drake",
-                            LastName: "Carter",
-                            Address: "here",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "Drake",
+                            LastName = "Carter",
+                            Address = "here",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Dominic",
-                            LastName: "Verton",
-                            Address: "somewhere out there",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "Dominic",
+                            LastName = "Verton",
+                            Address = "somewhere out there",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Wakka",
-                            LastName: "Flocka",
-                            Address: "way out there",
-                            City: "Nashville",
-                            State: "TN",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "Wakka",
+                            LastName = "Flocka",
+                            Address = "way out there",
+                            City = "Nashville",
+                            State = "TN",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         },
                         new ApplicationUser
                         {
-                            FirstName: "Smith",
-                            LastName: "Havier",
-                            Address: "somewhere out there",
-                            City: "Florence",
-                            State: "AL",
-                            Zip: 37202,
-                            Phone: 615-555-5050
+                            FirstName = "Smith",
+                            LastName = "Havier",
+                            Address = "somewhere out there",
+                            City = "Florence",
+                            State = "AL",
+                            Zip = "37202",
+                            Phone = 615-555-5050
                         }
                     );
                 }   
