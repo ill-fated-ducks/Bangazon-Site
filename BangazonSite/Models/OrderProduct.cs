@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace BangazonSite.Models
 {
-    public class ProductUser
+    public class OrderProduct
     {
         [Key]
-        public int ProductUserId { get; set; }
+        public int OrderProductId { get; set; }
 
         [Required]
         public int ProductId { get; set; }
-
-        [Required]
-        public ApplicationUser User { get; set; }
-
-        [Required]
-        public int Rating { get; set; }
-
-        [Required]
         public Product Product { get; set; }
+
+        [Required]
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
     }
 }
+
+
