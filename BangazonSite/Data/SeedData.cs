@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BangazonSite.Models;
 using System.Threading.Tasks;
 
 namespace Bangazon_.Data
@@ -59,7 +60,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Joan").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Joan").ApplicationUserId
                     },
 
                     new Product
@@ -73,7 +74,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Hendersonville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Jimmy").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Jimmy").ApplicationUserId
                     },
 
                     new Product
@@ -87,7 +88,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Brantwood",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Drake").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Drake").ApplicationUserId
                     },
 
                     new Product
@@ -101,7 +102,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Dominic").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Dominic").ApplicationUserId
                     },
 
                     new Product
@@ -115,7 +116,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Hendersonville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Wakka").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Wakka").ApplicationUserId
                     },
 
                     new Product
@@ -129,7 +130,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Smith").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Smith").ApplicationUserId
                     },
 
                     new Product
@@ -143,7 +144,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Brantwood",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Joan").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Joan").ApplicationUserId
                     },
 
                     new Product
@@ -157,7 +158,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.UserClaims.First(i => i.FirstName == "Jimmy").ApplicationUserId
+                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Jimmy").ApplicationUserId
                     });
                     context.SaveChanges();
                 }
