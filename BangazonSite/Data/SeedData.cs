@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BangazonSite.Models;
 
 namespace BangazonSite.Data
 {
@@ -12,13 +13,13 @@ namespace BangazonSite.Data
             using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 // Look for any Users
-                if (context.User.Any())
+                if (context.ApplicationUser.Any())
                 {
                     //Users table already seeded
                 }
                 else
                 {
-                    context.User.AddRange(
+                    context.ApplicationUser.AddRange(
                         new ApplicationUser
                         {
                             FirstName: "John",
@@ -102,55 +103,55 @@ namespace BangazonSite.Data
                     context.Product.AddRange(
                         new Product
                         {
-                            ProductTypeId: context.ProductType.First(p => p.Type == "Food").ProductTypeId,
-                            Title: "CrackerJacks",
-                            Description: "Caramel covered popcorn with peanuts. May rot or break your teeth",
-                            Price: 1,
-                            DateCreated: DateTime.Now,
-                            QuantityAvailable: 5,
-                            LocalDeliveryCity: "",
-                            ImagePath: "",
-                            IsActive: true
-                            ApplicationUserId: context.ApplicationUser.First(u => u.FirstName == "Smith").ApplicationUserId
+                            ProductTypeId = context.ProductType.First(p => p.Type == "Food").ProductTypeId,
+                            Title = "CrackerJacks",
+                            Description = "Caramel covered popcorn with peanuts. May rot or break your teeth",
+                            Price = 1,
+                            DateCreated = DateTime.Now,
+                            QuantityAvailable = 5,
+                            LocalDeliveryCity = "",
+                            ImagePath = "",
+                            IsActive = true,
+                            User = context.ApplicationUser.First(u => u.FirstName == "Smith")
                         },
                         new Product
                         {
-                            ProductTypeId: context.ProductType.First(p => p.Type == "Electronics").ProductTypeId,
-                            Title: "Cruzer USB drive",
-                            Description: "35GB of storage",
-                            Price: 56.34,
-                            DateCreated: DateTime.Now,
-                            QuantityAvailable: 6,
-                            LocalDeliveryCity: "",
-                            ImagePath: "",
-                            IsActive: true
-                            ApplicationUserId: context.ApplicationUser.First(u => u.FirstName == "Jacques").ApplicationUserId
+                            ProductTypeId = context.ProductType.First(p => p.Type == "Electronics").ProductTypeId,
+                            Title = "Cruzer USB drive",
+                            Description = "35GB of storage",
+                            Price = 56.34,
+                            DateCreated = DateTime.Now,
+                            QuantityAvailable = 6,
+                            LocalDeliveryCity = "",
+                            ImagePath = "",
+                            IsActive = true,
+                            User = context.ApplicationUser.First(u => u.FirstName == "Jacques")
                         },
                         new Product
                         {
-                            ProductTypeId: context.ProductType.First(p => p.Type == "Furniture").ProductTypeId,
-                            Title: "Tete e Tete Chair",
-                            Description: "Wonderful chair that enables conversation bewtween two people without craning your neck",
-                            Price: 100,
-                            DateCreated: DateTime.Now,
-                            QuantityAvailable: 1,
-                            LocalDeliveryCity: "Nashville",
-                            ImagePath: "",
-                            IsActive: true
-                            ApplicationUserId: context.ApplicationUser.First(u => u.FirstName == "Jimmy").ApplicationUserId
+                            ProductTypeId = context.ProductType.First(p => p.Type == "Furniture").ProductTypeId,
+                            Title = "Tete e Tete Chair",
+                            Description = "Wonderful chair that enables conversation bewtween two people without craning your neck",
+                            Price = 100,
+                            DateCreated = DateTime.Now,
+                            QuantityAvailable = 1,
+                            LocalDeliveryCity = "Nashville",
+                            ImagePath = "",
+                            IsActive = true,
+                            User = context.ApplicationUser.First(u => u.FirstName == "Jimmy")
                         },
                         new Product
                         {
-                            ProductTypeId: context.ProductType.First(p => p.Type == "Automobile").ProductTypeId,
-                            Title: "Mazda Miata",
-                            Description: "Super cool convertible",
-                            Price: 1500,
-                            DateCreated: DateTime.Now,
-                            QuantityAvailable: 1,
-                            LocalDeliveryCity: "San Jose",
-                            ImagePath: "",
-                            IsActive: true
-                            ApplicationUserId: context.ApplicationUser.First(u => u.FirstName == "John").ApplicationUserId
+                            ProductTypeId = context.ProductType.First(p => p.Type == "Automobile").ProductTypeId,
+                            Title = "Mazda Miata",
+                            Description = "Super cool convertible",
+                            Price = 1500,
+                            DateCreated = DateTime.Now,
+                            QuantityAvailable = 1,
+                            LocalDeliveryCity = "San Jose",
+                            ImagePath = "",
+                            IsActive = true,
+                            User = context.ApplicationUser.First(u => u.FirstName == "John")
                         }
                     );
                     context.SaveChanges();
