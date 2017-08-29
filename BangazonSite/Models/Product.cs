@@ -14,7 +14,7 @@ namespace BangazonSite.Models
         [Required]
         public int Quantity { get; set; }
 
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
 
         [DataType(DataType.Date)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -48,6 +48,6 @@ namespace BangazonSite.Models
 
         public ProductType ProductType { get; set; }
 
-        public ICollection<OrderProduct> OrderProduct { get; set; }
+        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
     }
 }
