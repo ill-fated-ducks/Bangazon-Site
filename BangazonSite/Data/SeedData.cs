@@ -60,7 +60,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Joan").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Joan")
                     },
 
                     new Product
@@ -74,7 +74,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Hendersonville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Jimmy").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Jimmy")
                     },
 
                     new Product
@@ -88,7 +88,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Brantwood",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Drake").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Drake")
                     },
 
                     new Product
@@ -102,7 +102,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Dominic").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Dominic")
                     },
 
                     new Product
@@ -116,7 +116,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Hendersonville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Wakka").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Wakka")
                     },
 
                     new Product
@@ -130,7 +130,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Smith").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Smith")
                     },
 
                     new Product
@@ -144,7 +144,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Brantwood",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Joan").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Joan")
                     },
 
                     new Product
@@ -158,7 +158,7 @@ namespace Bangazon_.Data
                         LocalDeliveryCity = "Nashville",
                         ImagePath = null,
                         IsActive = true,
-                        ApplicationUserId = context.ApplicationUser.First(i => i.FirstName == "Jimmy").ApplicationUserId
+                        User = context.ApplicationUser.First(i => i.FirstName == "Jimmy")
                     });
                     context.SaveChanges();
                 }
