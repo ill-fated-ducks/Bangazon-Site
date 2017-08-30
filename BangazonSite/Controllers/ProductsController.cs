@@ -45,6 +45,21 @@ namespace BangazonSite.Controllers
             return View(product);
         }
 
+        // GET: Products/Search
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var products = from p in _context.Product
+                         select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //LInq statement that filters products by Title, Description or Delivery City
+                products = products.Where(g => g.Title.Contains(searchString) || g.Description.Contains(searchString) || g.LocalDeliveryCity.Contains(searchString));
+            }
+
+            return View(await products.ToListAsync());
+        }
+
         // GET: Products/Create
         public IActionResult Create()
         {
