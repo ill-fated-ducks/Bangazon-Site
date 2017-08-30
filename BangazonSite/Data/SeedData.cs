@@ -142,7 +142,7 @@ namespace BangazonSite.Data
                     user.PasswordHash = hashed;
 
                     var userStore = new UserStore<ApplicationUser>(context);
-                    var result = userStore.CreateAsync(user);
+                    userStore.CreateAsync(user);
                 }
 
                 context.SaveChanges();

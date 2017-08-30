@@ -155,7 +155,7 @@ namespace BangazonSite.Migrations
                     Description = table.Column<string>(maxLength: 255, nullable: false),
                     ImagePath = table.Column<string>(maxLength: 255, nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
-                    LocalDeliveryCity = table.Column<string>(maxLength: 55, nullable: false),
+                    LocalDeliveryCity = table.Column<string>(maxLength: 55, nullable: true),
                     Price = table.Column<double>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),

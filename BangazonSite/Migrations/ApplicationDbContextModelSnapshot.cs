@@ -158,7 +158,8 @@ namespace BangazonSite.Migrations
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateCreated");
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Description")
                         .IsRequired()
