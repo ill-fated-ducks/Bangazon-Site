@@ -15,7 +15,7 @@ namespace BangazonSite.Data
     public class SeedData
     {
 
-        public static void Initialize(IServiceProvider serviceProvider)
+        public async static void Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetService<ApplicationDbContext>();
 
@@ -142,7 +142,7 @@ namespace BangazonSite.Data
                     user.PasswordHash = hashed;
 
                     var userStore = new UserStore<ApplicationUser>(context);
-                    userStore.CreateAsync(user);
+                    await userStore.CreateAsync(user);
                 }
 
                 context.SaveChanges();
