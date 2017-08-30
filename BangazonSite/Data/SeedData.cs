@@ -355,6 +355,29 @@ namespace BangazonSite.Data
                 );
                 context.SaveChanges();
             }
+
+            if (context.Order.Any())
+            {
+                // Already seeded
+            }
+            else
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                context.Order.AddRange(
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = 7
+                    },
+
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = 7
+                    }
+                );
+                context.SaveChanges();
+            }
         }
 
     }
