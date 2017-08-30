@@ -17,7 +17,6 @@ namespace BangazonSite.Models
         public bool IsActive { get; set; }
 
         [DataType(DataType.Date)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
         [Required]
