@@ -31,7 +31,11 @@ namespace BangazonSite.Controllers
         // GET: PaymentTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PaymentType.ToListAsync());
+            // Get current user
+            var user = await GetCurrentUserAsync();
+
+            IEnumerable<PaymentType> models =  await _context.PaymentType.Where(p => p.User.Id == user.Id).ToListAsync();
+            return View(models);
         }
 
         // GET: PaymentTypes/Details/5
@@ -85,7 +89,7 @@ namespace BangazonSite.Controllers
                 _context.Add(paymentType);
 
                 await _context.SaveChangesAsync();
-                return RedirectToRoute(new { controller = "Manage", action = "Index" });
+                return RedirectToAction("Index");
             }
             return View(paymentType);
         }
