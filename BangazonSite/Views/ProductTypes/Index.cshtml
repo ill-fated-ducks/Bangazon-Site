@@ -1,21 +1,41 @@
 @model IEnumerable<BangazonSite.Models.ProductType>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Product Type Listing";
 }
 
-<h2>Index</h2>
+@*<h2>@ViewData["Title"]</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@foreach (var type in (IEnumerable<object>)ViewBag["types"])
+{
+    @type
+    <div class="row top-buffer">
+        <div class="col-md-8">@type.TypeName</div>
+        <div class="col-md-2">@type.ProductCount</div>
+        <div class="col-md-2">
+        </div>
+    </div>
+}*@
+
+
+
+
+
+<h2>Product Catagories</h2>
+
+
 <table class="table">
     <thead>
         <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Type)
                 </th>
-            <th></th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
         </tr>
     </thead>
     <tbody>
@@ -25,11 +45,13 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductTypeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductTypeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductTypeId">Delete</a>
+                
+            </td>
+            <td>
+
             </td>
         </tr>
+       
 }
     </tbody>
 </table>

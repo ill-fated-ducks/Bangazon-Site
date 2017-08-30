@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
+using BangazonSite.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
@@ -22,7 +23,22 @@ namespace BangazonSite.Controllers
         // GET: ProductTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductType.ToListAsync());
+            // Add the grouped products, by product type, to the ViewBag
+            ViewBag["types"] = from t in _context.ProductType
+                               join p in _context.Product
+                               on t.ProductTypeId equals p.ProductTypeId
+                               group new { t, p } by new { t.Type } into grouped
+                               select new
+                               {
+                                   TypeName = grouped.Key.Type,
+                                   ProductCount = grouped.Select(x => x.p.ProductId).Count()
+                               };
+            var allProductTypes = _context.ProductType;
+            var allProducts = _context.Product;
+
+            var productTypeView = new ProductTypeViewModel(allProductTypes, allProducts);
+
+            return View(productTypeView);
         }
 
         // GET: ProductTypes/Details/5
