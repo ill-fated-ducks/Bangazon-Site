@@ -7,17 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
+using Microsoft.AspNetCore.Identity;
+using BangazonSite.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
+
+        // Retrieve currently logged in user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -165,6 +172,17 @@ namespace BangazonSite.Controllers
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        // Get: Products/MyProducts
+        // This method was authured by Jordan Dhaenens
+        // This method returns a seller's listed products and stats
+        public async Task<IActionResult> MyProducts()
+        {
+            var user = await GetCurrentUserAsync();
+            MyProductsOrderVM model = new MyProductsOrderVM(_context, user);
+
+            return View(model);
         }
 
         private bool ProductExists(int id)
