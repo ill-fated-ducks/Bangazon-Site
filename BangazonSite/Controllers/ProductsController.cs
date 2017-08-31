@@ -181,6 +181,7 @@ namespace BangazonSite.Controllers
         {
             var user = await GetCurrentUserAsync();
             MyProductsOrderVM model = new MyProductsOrderVM(_context, user);
+            var test = model;
 
             return View(model);
         }

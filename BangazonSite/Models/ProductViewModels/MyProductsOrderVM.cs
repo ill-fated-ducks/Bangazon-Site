@@ -7,6 +7,7 @@ using BangazonSite.Data;
 
 namespace BangazonSite.Models.ProductViewModels
 {
+    // This class was authored by Jordan Dhaenens
     public class MyProductsOrderVM
     {
         public ApplicationUser User { get; set; }
@@ -16,7 +17,7 @@ namespace BangazonSite.Models.ProductViewModels
         public MyProductsOrderVM(ApplicationDbContext ctx, ApplicationUser user)
         {
             User = user;
-            Products = ctx.Product.Where(p => p.User == user);
+            Products = ctx.Product.Where(p => p.User == user).Include(t => t.ProductType);
         }
     }
 }
