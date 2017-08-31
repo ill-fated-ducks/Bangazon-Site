@@ -23,22 +23,28 @@ namespace BangazonSite.Controllers
         // GET: ProductTypes
         public async Task<IActionResult> Index()
         {
-            // Add the grouped products, by product type, to the ViewBag
-            ViewBag["types"] = from t in _context.ProductType
-                               join p in _context.Product
-                               on t.ProductTypeId equals p.ProductTypeId
-                               group new { t, p } by new { t.Type } into grouped
-                               select new
-                               {
-                                   TypeName = grouped.Key.Type,
-                                   ProductCount = grouped.Select(x => x.p.ProductId).Count()
-                               };
-            var allProductTypes = _context.ProductType;
-            var allProducts = _context.Product;
+            var model = new ProductTypeViewModel();
 
-            var productTypeView = new ProductTypeViewModel(allProductTypes, allProducts);
+            // Get line items grouped by product id, including count
+            var counter = from product in _context.Product
+                          group product by product.ProductTypeId into grouped
+                          select new { grouped.Key, myCount = grouped.Count() };
 
-            return View(productTypeView);
+            // Build list of Product instances for display in view
+            model.GroupedProducts = await(
+                from t in _context.ProductType
+                join p in _context.Product
+                on t.ProductTypeId equals p.ProductTypeId
+                group new { t, p } by new { t.ProductTypeId, t.Type } into grouped
+                select new GroupedProducts
+                {
+                    TypeId = grouped.Key.ProductTypeId,
+                    TypeName = grouped.Key.Type,
+                    ProductCount = grouped.Select(x => x.p.ProductId).Count(),
+                    Products = grouped.Select(x => x.p).Take(3)
+                }).ToListAsync();
+
+            return View(model);
         }
 
         // GET: ProductTypes/Details/5
