@@ -10,7 +10,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <a asp-controller="ProductTypes" asp-action="Detail" asp-route-type="@type.TypeId">
+            <a asp-controller="ProductTypes" asp-action="Details" asp-route-id="@type.TypeId">
                 <h4>@type.TypeName (@Html.DisplayFor(modelItem => type.ProductCount))</h4>
             </a>
         </div>
@@ -19,7 +19,7 @@
     {
         <div class="row">
             <div class="col-md-10">
-                <a asp-controller="Products" asp-action="Detail" asp-route-type="@product.ProductId">
+                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">
                     @product.Title
                 </a>
             </div>
