@@ -17,6 +17,8 @@ namespace BangazonSite.Controllers
             _context = context;
         }
 
+
+
         public IActionResult Index()
         {
             var recentProducts = _context.Product.OrderBy(e => e.DateCreated).Include(t => t.ProductType).Take(20);
