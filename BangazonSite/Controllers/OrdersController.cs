@@ -63,7 +63,6 @@ namespace BangazonSite.Controllers
             {
                 return NotFound();
             }
-
             return View(model);
         }
 
