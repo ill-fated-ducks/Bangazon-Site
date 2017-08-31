@@ -33,7 +33,7 @@ namespace BangazonSite.Controllers
             OrderListViewModel model = new OrderListViewModel();
 
             // Set the properties of the view model
-            model.Orders = await _context.Order.ToListAsync();
+            model.Orders = await _context.Order.Include(o => o.User).Include(o => o.PaymentType).ToListAsync();
             return View(model);
         }
 
@@ -53,6 +53,7 @@ namespace BangazonSite.Controllers
                 .Include(o => o.User)
                 .Include(o => o.PaymentType)
                 .Include(o => o.OrderProduct)
+                .ThenInclude(o => o.Product)
                 .SingleOrDefaultAsync(o => o.OrderId == id);
 
             if (model == null)
@@ -88,7 +89,7 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Complete(int? id)
         {
             if (id == null)
             {
@@ -111,7 +112,7 @@ namespace BangazonSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompleteOrderViewModel model)
+        public async Task<IActionResult> Complete(int id, CompleteOrderViewModel model)
         {
             if (id != model.Order.OrderId)
             {

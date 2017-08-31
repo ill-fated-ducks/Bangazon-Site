@@ -2,29 +2,51 @@
 
 @{
     ViewData["Title"] = "Details";
+    var groupedProduct = Model.Order.OrderProduct.GroupBy(i => i.ProductId);
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Order</h4>
+    <h4>Order @Html.DisplayFor(model => model.Order.OrderId)</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Order.PaymentType.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Order.PaymentType.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Order.PaymentType.AccountNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Order.PaymentType.AccountNumber)
-        </dd>
-    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <h4>Products</h4>
+                </th>
+                <th>
+                    <h4>Quantity</h4>
+                </th>
+                <th>
+                    <h4>Price Per Unit</h4>
+                </th>
+            </tr>
+        </thead>
+        <tbody>        
+            @foreach (var product in groupedProduct)
+            {
+                foreach (var p in product)
+                {
+                    <tr>
+                        <td>
+                            <h5>@p.Product.Title</h5>
+                        </td>
+                        <td>
+                            <h5>@p.Product.OrderProduct.Count(o => o.ProductId == p.ProductId)</h5>
+                        </td>
+                        <td>
+                            <h5>@p.Product.Price</h5>
+                        </td>
+                    </tr>
+                    break;
+                }
+            }
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Order.OrderId">Complete Order</a> |
+    <a class="btn btn-default" asp-action="Complete" asp-route-id="@Model.Order.OrderId">Complete</a> |
     <a asp-action="Index">Back to List</a>
 </div>

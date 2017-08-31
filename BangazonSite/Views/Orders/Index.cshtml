@@ -13,9 +13,11 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Orders)
+                @Html.DisplayNameFor(model => model.Order.OrderId)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.PaymentType.Type)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +27,9 @@
                 @Html.DisplayFor(modelItem => item.OrderId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                @Html.DisplayFor(modelItem => item.PaymentType.Type)
+            </td>
+            <td>
                 <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
             </td>

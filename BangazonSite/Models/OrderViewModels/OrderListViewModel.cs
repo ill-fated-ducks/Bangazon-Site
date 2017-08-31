@@ -8,5 +8,6 @@ namespace BangazonSite.Models.OrderViewModels
     public class OrderListViewModel
     {
         public IEnumerable<Order> Orders { get; set; }
+        public Order Order { get; set; }
     }
 }

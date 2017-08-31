@@ -6,6 +6,5 @@ namespace BangazonSite.Models.OrderViewModels
     public class OrderDetailViewModel
     {
         public Order Order { get; set; }
-        
     }
 }
