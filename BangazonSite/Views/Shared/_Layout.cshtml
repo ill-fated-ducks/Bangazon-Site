@@ -1,4 +1,4 @@
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,10 +33,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="ProductTypes" asp-action="Index">Product Catagories</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
+                @* Added search bar in the nav *@
+                <form asp-controller="Products" class="form-inline" asp-action="Search">
+                        <input  class="form-control mb-6 mr-sm-6 mb-sm-0" type="text" name="SearchString">
+                        <button type="submit" value="Filter" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </nav>
