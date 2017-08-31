@@ -27,11 +27,11 @@ namespace BangazonSite.Controllers
         }
 
         // GET: ProductTypes/Details/5
-       public async Task<IActionResult> Details([FromRoute]int? typeId)
+       public async Task<IActionResult> Details([FromRoute]int? id)
         {
 
             // If no id was in the route, return 404
-            if (typeId == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -45,7 +45,7 @@ namespace BangazonSite.Controllers
                 Write LINQ statement to get requested product type
              */
             
-            var productType = _context.ProductType.Single(t => t.ProductTypeId == typeId);
+            var productType = _context.ProductType.Single(t => t.ProductTypeId == id);
 
             // If product not found, return 404
             if (productType == null)
@@ -56,7 +56,7 @@ namespace BangazonSite.Controllers
             /*
                 Add corresponding products to the view model
              */
-            model.Products = _context.Product.Where(p => p.ProductTypeId == typeId);
+            model.Products = await _context.Product.Where(p => p.ProductTypeId == id).ToListAsync();
 
             // Add the product type to the view model
             model.ProductType = productType;
