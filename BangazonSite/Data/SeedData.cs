@@ -367,13 +367,40 @@ namespace BangazonSite.Data
                     new Order
                     {
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
-                        PaymentTypeId = 7
+                        PaymentTypeId = 1
                     },
 
                     new Order
                     {
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
-                        PaymentTypeId = 7
+                        PaymentTypeId = 1
+                    }
+                );
+                context.SaveChanges();
+            }
+
+            if (context.PaymentType.Any())
+            {
+                // Already seeded
+            }
+            else
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                context.PaymentType.AddRange(
+                    new PaymentType
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        IsActive = true,
+                        AccountNumber = "1234123412341234",
+                        Type = "Outdoors"
+                    },
+
+                    new PaymentType
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        IsActive = true,
+                        AccountNumber = "1234123412341234",
+                        Type = "Vida"
                     }
                 );
                 context.SaveChanges();
