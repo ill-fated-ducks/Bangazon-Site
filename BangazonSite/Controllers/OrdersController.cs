@@ -9,6 +9,7 @@ using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
 using BangazonSite.Models.OrderViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BangazonSite.Controllers
 {
@@ -20,13 +21,14 @@ namespace BangazonSite.Controllers
         public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _context = context;    
+            _context = context;
         }
 
         // This task retrieves the currently authenticated user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Orders
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             // Create new instance of the view model
@@ -37,9 +39,10 @@ namespace BangazonSite.Controllers
             return View(model);
         }
 
-        
+
 
         // GET: Orders/Details/5
+        [Authorize]
         public async Task<IActionResult> Details([FromRoute]int? id)
         {
             if (id == null)
@@ -65,6 +68,7 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Orders/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "AccountNumber");
@@ -75,6 +79,7 @@ namespace BangazonSite.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderId,PaymentTypeId")] Order order)
         {
@@ -89,6 +94,8 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Orders/Edit/5
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Complete(int? id)
         {
             if (id == null)
@@ -111,6 +118,7 @@ namespace BangazonSite.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Complete(int id, CompleteOrderViewModel model)
         {
@@ -149,6 +157,7 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Orders/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,6 +177,7 @@ namespace BangazonSite.Controllers
         }
 
         // POST: Orders/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
