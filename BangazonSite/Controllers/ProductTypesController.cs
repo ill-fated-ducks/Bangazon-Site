@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using BangazonSite.Models.ProductViewModels;
+using Bangazon.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
