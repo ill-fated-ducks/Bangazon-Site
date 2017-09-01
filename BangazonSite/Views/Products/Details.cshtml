@@ -35,19 +35,19 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
     </dl>
-    <form asp-controller="Products" class="form-inline" asp-action="Search">
+    <form asp-controller="Orders" id="formValue" class="form-inline" asp-action="BuyProduct" asp-route-id="@Model.ProductId" method="post">
         <div class="form-group">
             <label for="sel1">Select Quantity:</label>
-            <select class="form-control" id="sel1">
+            <select class="form-control" name="qty" id="sel1">
                 @for (var i = 1; i < Model.Quantity + 1; i++)
                 {<option>@i</option>}
             </select>
         </div>
-        <button type="submit" value="Filter" class="btn btn-primary">Submit</button>
+        <button type="submit" value="Filter" class="btn btn-primary">Add to Cart</button>
     </form>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
     <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
 </div>
