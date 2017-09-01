@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
-using Bangazon.Models.ProductViewModels;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace BangazonSite.Controllers
 {
@@ -16,11 +18,13 @@ namespace BangazonSite.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private IHostingEnvironment _environment;
 
-        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
+            _environment = environment;
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
@@ -86,6 +90,11 @@ namespace BangazonSite.Controllers
 
             if (ModelState.IsValid)
             {
+
+                // saving an image to file storage
+                
+
+
                 // Get current user
                 var user = await GetCurrentUserAsync();
                 product.User = user;
