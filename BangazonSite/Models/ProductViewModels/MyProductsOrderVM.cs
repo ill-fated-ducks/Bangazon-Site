@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BangazonSite.Models;
 using BangazonSite.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BangazonSite.Models.ProductViewModels
 {
@@ -17,7 +18,9 @@ namespace BangazonSite.Models.ProductViewModels
         public MyProductsOrderVM(ApplicationDbContext ctx, ApplicationUser user)
         {
             User = user;
+
             Products = ctx.Product.Where(p => p.User == user).Include(t => t.ProductType);
+
         }
     }
 }
