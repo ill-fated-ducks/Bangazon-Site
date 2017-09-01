@@ -356,29 +356,6 @@ namespace BangazonSite.Data
                 context.SaveChanges();
             }
 
-            if (context.Order.Any())
-            {
-                // Already seeded
-            }
-            else
-            {
-                var userStore = new UserStore<ApplicationUser>(context);
-                context.Order.AddRange(
-                    new Order
-                    {
-                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
-                        PaymentTypeId = 1
-                    },
-
-                    new Order
-                    {
-                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
-                        PaymentTypeId = 1
-                    }
-                );
-                context.SaveChanges();
-            }
-
             if (context.PaymentType.Any())
             {
                 // Already seeded
@@ -405,6 +382,30 @@ namespace BangazonSite.Data
                 );
                 context.SaveChanges();
             }
+
+            if (context.Order.Any())
+            {
+                // Already seeded
+            }
+            else
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                context.Order.AddRange(
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = context.PaymentType.First(x => x.Type == "Outdoors").PaymentTypeId
+                    },
+
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = context.PaymentType.First(x => x.Type == "Vida").PaymentTypeId
+                    }
+                );
+                context.SaveChanges();
+            }
+
         }
 
     }

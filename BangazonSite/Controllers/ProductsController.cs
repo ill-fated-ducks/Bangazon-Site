@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
+using Bangazon.Models.ProductViewModels;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using BangazonWebsite.Models.ViewModels;
 
 namespace BangazonSite.Controllers
 {
@@ -24,7 +27,6 @@ namespace BangazonSite.Controllers
         {
             _context = context;
             _userManager = userManager;
-            _environment = environment;
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
@@ -59,7 +61,7 @@ namespace BangazonSite.Controllers
         public async Task<IActionResult> Search(string searchString)
         {
             var products = from p in _context.Product
-                         select p;
+                           select p;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -82,31 +84,36 @@ namespace BangazonSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Quantity,Description,ImagePath,LocalDeliveryCity,Title,Price,ProductTypeId")] Product product)
+        public async Task<IActionResult> Create(ProductCreateViewModel model)
         {
-            ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type", product.ProductTypeId);
-
             ModelState.Remove("User");
 
             if (ModelState.IsValid)
             {
 
-                // saving an image to file storage
-                
-
+                //var filename = model.Product.ImagePath;
+                //    filename = _environment.WebRootPath + $@"\images\{filename.Split('\\').Last()}";
+                //    using (var fileStream = new FileStream(filename, FileMode.Create))
+                //    {
+                //        await path.CopyToAsync(fileStream);
+                //        model.Product.ImagePath = $@"\images\{filename.Split('\\').Last()}";
+                //    }
 
                 // Get current user
                 var user = await GetCurrentUserAsync();
-                product.User = user;
-                product.IsActive = true;
-                product.DateCreated = DateTime.Now;
+                model.Product.User = user;
+                model.Product.IsActive = true;
+                model.Product.DateCreated = DateTime.Now;
 
-                _context.Add(product);
+                _context.Add(model);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new { @id = product.ProductId });
+                return RedirectToAction("Details", new { @id = model.Product.ProductId });
             }
-            return View(product);
+
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "ProductTypeId", "ProductTypeId", model.Product.ProductTypeId);
+            ProductCreateViewModel model2 = new ProductCreateViewModel(_context);
+            return View(model2);
 
         }
 
