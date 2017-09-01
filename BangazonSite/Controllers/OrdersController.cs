@@ -112,10 +112,13 @@ namespace BangazonSite.Controllers
                 order = await CreateOrder();
             }
             //then it will try to add order to the join table in OrderProduct table
-            var orderProduct = new OrderProduct();
-            orderProduct.Order = order;
-            orderProduct.Product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == id);
-            _context.Add(orderProduct);
+            for(var i = 0; i < qty; i++)
+            {
+                var orderProduct = new OrderProduct();
+                orderProduct.Order = order;
+                orderProduct.Product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == id);
+                _context.Add(orderProduct);
+            }
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
