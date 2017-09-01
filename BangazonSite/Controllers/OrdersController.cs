@@ -7,42 +7,60 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
+using Microsoft.AspNetCore.Identity;
+using BangazonSite.Models.OrderViewModels;
 
 namespace BangazonSite.Controllers
 {
     public class OrdersController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;    
         }
+
+        // This task retrieves the currently authenticated user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Order.Include(o => o.PaymentType);
-            return View(await applicationDbContext.ToListAsync());
+            // Create new instance of the view model
+            OrderListViewModel model = new OrderListViewModel();
+
+            // Set the properties of the view model
+            model.Orders = await _context.Order.ToListAsync();
+            return View(model);
         }
 
+        
+
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details([FromRoute]int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Order
+            OrderDetailViewModel model = new OrderDetailViewModel();
+
+            model.Order = await _context.Order
+                .Include(o => o.User)
                 .Include(o => o.PaymentType)
-                .SingleOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+                .Include(o => o.OrderProduct)
+                .SingleOrDefaultAsync(o => o.OrderId == id);
+
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(model);
         }
 
         // GET: Orders/Create
@@ -78,12 +96,14 @@ namespace BangazonSite.Controllers
             }
 
             var order = await _context.Order.SingleOrDefaultAsync(m => m.OrderId == id);
+            CompleteOrderViewModel model = new CompleteOrderViewModel();
+            model.Order = order;
             if (order == null)
             {
                 return NotFound();
             }
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "AccountNumber", order.PaymentTypeId);
-            return View(order);
+            return View(model);
         }
 
         // POST: Orders/Edit/5
@@ -91,23 +111,23 @@ namespace BangazonSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,PaymentTypeId")] Order order)
+        public async Task<IActionResult> Edit(int id, CompleteOrderViewModel model)
         {
-            if (id != order.OrderId)
+            if (id != model.Order.OrderId)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Order.User");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(model.Order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.OrderId))
+                    if (!OrderExists(model.Order.OrderId))
                     {
                         return NotFound();
                     }
@@ -116,10 +136,15 @@ namespace BangazonSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("ThankYou");
             }
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "AccountNumber", order.PaymentTypeId);
-            return View(order);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "AccountNumber", model.Order.PaymentTypeId);
+            return View(model);
+        }
+
+        public IActionResult ThankYou()
+        {
+            return View();
         }
 
         // GET: Orders/Delete/5

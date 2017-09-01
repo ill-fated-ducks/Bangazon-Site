@@ -1,10 +1,10 @@
-@model IEnumerable<BangazonSite.Models.Order>
+@model BangazonSite.Models.OrderViewModels.OrderListViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Orders List";
 }
 
-<h2>Index</h2>
+<h2>Orders List</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentType)
+                @Html.DisplayNameFor(model => model.Orders)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Orders) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PaymentType.AccountNumber)
+                @Html.DisplayFor(modelItem => item.OrderId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
