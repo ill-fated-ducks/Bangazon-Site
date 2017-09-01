@@ -8,17 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
+using Bangazon.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ApplicationDbContext _context;  
+
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ProductsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -54,7 +60,6 @@ namespace BangazonSite.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                //LInq statement that filters products by Title, Description or Delivery City
                 products = products.Where(g => g.Title.Contains(searchString) || g.Description.Contains(searchString) || g.LocalDeliveryCity.Contains(searchString));
             }
 
@@ -62,8 +67,9 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await GetCurrentUserAsync();
             ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type");
             return View();
         }
@@ -73,16 +79,27 @@ namespace BangazonSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Quantity,isActive,DateCreated,Description,ImagePath,LocalDeliveryCity,Title,Price,ProductTypeId")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,Quantity,Description,ImagePath,LocalDeliveryCity,Title,Price,ProductTypeId")] Product product)
         {
+            ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type", product.ProductTypeId);
+
+            ModelState.Remove("User");
+
             if (ModelState.IsValid)
             {
+                // Get current user
+                var user = await GetCurrentUserAsync();
+                product.User = user;
+                product.IsActive = true;
+                product.DateCreated = DateTime.Now;
+
                 _context.Add(product);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { @id = product.ProductId });
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type", product.ProductTypeId);
             return View(product);
+
         }
 
         // GET: Products/Edit/5
