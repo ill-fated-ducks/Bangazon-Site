@@ -60,9 +60,8 @@ namespace BangazonSite.Controllers
             }
             var model = new IndexViewModel
             {
+                User = user,
                 HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
             };
@@ -87,6 +86,7 @@ namespace BangazonSite.Controllers
                 }
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
+
         }
 
         //

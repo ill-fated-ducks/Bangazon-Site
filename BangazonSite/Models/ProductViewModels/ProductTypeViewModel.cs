@@ -18,4 +18,6 @@ namespace BangazonSite.Models.ProductViewModels
         public IEnumerable<Product> Products { get; set; }
     }
 
+
+
 }

@@ -24,6 +24,7 @@ namespace BangazonSite.Controllers
         {
             var applicationDbContext = _context.Order.Include(o => o.PaymentType);
             return View(await applicationDbContext.ToListAsync());
+
         }
 
         // GET: Orders/Details/5
