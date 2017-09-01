@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
+using Bangazon.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
@@ -58,7 +59,6 @@ namespace BangazonSite.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                //LInq statement that filters products by Title, Description or Delivery City
                 products = products.Where(g => g.Title.Contains(searchString) || g.Description.Contains(searchString) || g.LocalDeliveryCity.Contains(searchString));
             }
 
