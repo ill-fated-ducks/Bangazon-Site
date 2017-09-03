@@ -9,6 +9,7 @@ using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
 using Bangazon.Models.ProductViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BangazonSite.Controllers
 {
@@ -25,11 +26,16 @@ namespace BangazonSite.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        // GET: Products
+        // GET: UserProducts
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Product.Include(p => p.ProductType);
-            return View(await applicationDbContext.ToListAsync());
+           
+            //once it gets that info it will try to create order
+            var user = await GetCurrentUserAsync();
+            var userProducts = _context.Product.Where(m => m.User.Email == user.Email);
+
+            return View(await userProducts.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -153,6 +159,7 @@ namespace BangazonSite.Controllers
             ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type", product.ProductTypeId);
             return View(product);
         }
+       
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -178,9 +185,19 @@ namespace BangazonSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
-            _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            try
+            {
+                //This method tries to delete product from the database, if product is added to the order it will throw exception
+                var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
+                _context.Product.Remove(product);
+                await _context.SaveChangesAsync();
+
+            }
+            catch(Exception)
+            {
+                //If it throws exception it will catch it and redirects to the home page
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
 
