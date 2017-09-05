@@ -206,6 +206,17 @@ namespace BangazonSite.Controllers
             return RedirectToAction("Index");
         }
 
+
+        // GET: MyOrders
+        // This method was authored by Jordan Dhaenens
+        // This method retrieves a logged-in user's order history
+        public async Task<IActionResult> MyOrders()
+        {
+            var applicationDbContext = _context.Order.Include(o => o.PaymentType);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.OrderId == id);
