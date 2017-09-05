@@ -13,7 +13,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using BangazonWebsite.Models.ViewModels;
+using BangazonSite.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
@@ -91,21 +91,13 @@ namespace BangazonSite.Controllers
             if (ModelState.IsValid)
             {
 
-                //var filename = model.Product.ImagePath;
-                //    filename = _environment.WebRootPath + $@"\images\{filename.Split('\\').Last()}";
-                //    using (var fileStream = new FileStream(filename, FileMode.Create))
-                //    {
-                //        await path.CopyToAsync(fileStream);
-                //        model.Product.ImagePath = $@"\images\{filename.Split('\\').Last()}";
-                //    }
-
                 // Get current user
                 var user = await GetCurrentUserAsync();
                 model.Product.User = user;
                 model.Product.IsActive = true;
                 model.Product.DateCreated = DateTime.Now;
 
-                _context.Add(model);
+                _context.Add(model.Product);
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", new { @id = model.Product.ProductId });

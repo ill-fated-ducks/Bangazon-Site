@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BangazonWebsite.Models.ViewModels
+namespace BangazonSite.Models.ProductViewModels
 {
     public class ProductCreateViewModel
     {
@@ -19,11 +19,11 @@ namespace BangazonWebsite.Models.ViewModels
             // control in a Razor template. See Views/Products/Create.cshtml
             // for an example.
             this.ProductTypeId = ctx.ProductType
-                                    .OrderBy(l => l.Label)
+                                    .OrderBy(l => l.Type)
                                     .AsEnumerable()
                                     .Select(li => new SelectListItem
                                     {
-                                        Text = li.Label,
+                                        Text = li.Type,
                                         Value = li.ProductTypeId.ToString()
                                     }).ToList();
 
