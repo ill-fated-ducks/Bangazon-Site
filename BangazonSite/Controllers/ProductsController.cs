@@ -93,7 +93,7 @@ namespace BangazonSite.Controllers
             {
 
                 long size = 0;
-                foreach (var file in model.ImagePath)
+                foreach (var file in model.image)
                 {
                     var filename = ContentDispositionHeaderValue
                                     .Parse(file.ContentDisposition)

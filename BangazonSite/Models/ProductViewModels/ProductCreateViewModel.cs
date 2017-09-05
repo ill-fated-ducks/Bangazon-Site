@@ -37,6 +37,6 @@ namespace BangazonSite.Models.ProductViewModels
         {
 
         }
-        public List<IFormFile> ImagePath { get; set; } = new List<IFormFile>();
+        public List<IFormFile> image { get; set; } = new List<IFormFile>();
     }
 }
