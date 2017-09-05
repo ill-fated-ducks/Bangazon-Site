@@ -34,7 +34,7 @@ namespace BangazonSite.Controllers
             //once it gets that info it will try to create order
             var user = await GetCurrentUserAsync();
             var userProducts = _context.Product.Where(m => m.User.Email == user.Email);
-
+   
             return View(await userProducts.ToListAsync());
         }
 
@@ -188,18 +188,47 @@ namespace BangazonSite.Controllers
             try
             {
                 //This method tries to delete product from the database, if product is added to the order it will throw exception
-                var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
-                _context.Product.Remove(product);
+                var products = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
+                _context.Product.Remove(products);
+
                 await _context.SaveChangesAsync();
 
             }
-            catch(Exception)
+            //If it throws exception it will catch it and tries to remove that product from other tables
+            catch (Exception)
             {
-                //If it throws exception it will catch it and redirects to the home page
-                return RedirectToAction("Index");
+                var ordered = _context.OrderProduct.Where(li => li.ProductId == id);
+
+                // On an open order?
+                var productOnOpenOrder = from product in _context.Product
+                                         join op in _context.OrderProduct
+                                         on product.ProductId equals op.ProductId
+                                         join o in _context.Order
+                                         on op.OrderId equals o.OrderId
+                                         where o.PaymentTypeId == null
+                                         select product;
+                                         
+  
+                if (productOnOpenOrder != null)
+                {
+                    // Get all rows in OrderProduct with this product
+                    var orderProduct = _context.OrderProduct.Where(li => li.ProductId == id);
+
+                    // Delete all rows in OrderProduct
+                    foreach (OrderProduct i in orderProduct)
+                    {
+                        _context.OrderProduct.Remove(i);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return RedirectToAction("Sold");
+                }
             }
             return RedirectToAction("Index");
-        }
+}
 
         private bool ProductExists(int id)
         {

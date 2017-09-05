@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DateCreated)
             </th>
             <th>
@@ -34,6 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
@@ -42,7 +48,7 @@
             <td>
                 <form asp-action="Delete" asp-route-id="@item.ProductId">
                     <div class="form-actions no-color">
-                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <input type="submit" value="Remove" class="btn btn-danger" />
                     </div>
                 </form>
             </td>
