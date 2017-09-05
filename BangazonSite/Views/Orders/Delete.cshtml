@@ -2,24 +2,60 @@
 
 @{
     ViewData["Title"] = "Delete";
+    var groupedProduct = Model.OrderProduct.GroupBy(i => i.ProductId);
 }
 
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Order</h4>
+    <h4>Order @Html.DisplayFor(model => model.OrderId)</h4>
     <hr />
     <dl class="dl-horizontal">
         <input type="hidden" asp-for="OrderId" />
         <dt>
-            @Html.DisplayNameFor(model => model.PaymentType)
+            @Html.DisplayNameFor(model => model.OrderId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PaymentType.AccountNumber)
+            @Html.DisplayFor(model => model.OrderId)
         </dd>
     </dl>
-    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <h4>Products</h4>
+                </th>
+                <th>
+                    <h4>Quantity</h4>
+                </th>
+                <th>
+                    <h4>Price Per Unit</h4>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in groupedProduct)
+            {
+                foreach (var p in product)
+                {
+
+                    <tr>
+                        <td>
+                            <h5>@p.Product.Title</h5>
+                        </td>
+                        <td>
+                            <h5>@p.Product.OrderProduct.Count(o => o.ProductId == p.ProductId)</h5>
+                        </td>
+                        <td>
+                            <h5>@p.Product.Price</h5>
+                        </td>
+                    </tr>
+                    break;
+                }
+            }
+        </tbody>
+    </table>
     <form asp-action="Delete">
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
