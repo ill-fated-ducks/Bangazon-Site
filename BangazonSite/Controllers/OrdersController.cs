@@ -93,7 +93,7 @@ namespace BangazonSite.Controllers
         }
 
         // GET: Orders/Edit/5
-        [HttpPost]
+        
         [Authorize]
         public async Task<IActionResult> Complete(int? id)
         {
@@ -182,6 +182,13 @@ namespace BangazonSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var orderProducts = await _context.OrderProduct.Where(p => p.OrderId == id).ToListAsync();
+
+            foreach (var p in orderProducts)
+                {
+                    _context.OrderProduct.Remove(p);
+                }
+
             var order = await _context.Order.SingleOrDefaultAsync(m => m.OrderId == id);
             _context.Order.Remove(order);
             await _context.SaveChangesAsync();

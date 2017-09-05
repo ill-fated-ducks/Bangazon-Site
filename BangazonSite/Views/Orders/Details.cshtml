@@ -5,7 +5,7 @@
     var groupedProduct = Model.Order.OrderProduct.GroupBy(i => i.ProductId);
 }
 
-<h2>Details</h2>
+<h2>Shopping Cart</h2>
 
 <div>
     <h4>Order @Html.DisplayFor(model => model.Order.OrderId)</h4>
@@ -39,6 +39,7 @@
                         <td>
                             <h5>@p.Product.Price</h5>
                         </td>
+                        <td><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Model.Order.OrderId">Delete</a></td>
                     </tr>
                     break;
                 }
@@ -48,5 +49,8 @@
 </div>
 <div>
     <a class="btn btn-default" asp-action="Complete" asp-route-id="@Model.Order.OrderId">Complete</a> |
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Order.OrderId">Cancel Order</a>
+</div>
+<div>
     <a asp-action="Index">Back to List</a>
 </div>
