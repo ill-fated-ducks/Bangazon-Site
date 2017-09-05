@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
+using BangazonSite.Models.ProductViewModels;
+using Bangazon.Models.ProductViewModels;
 
 namespace BangazonSite.Controllers
 {
@@ -22,25 +24,66 @@ namespace BangazonSite.Controllers
         // GET: ProductTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductType.ToListAsync());
+            var model = new ProductTypeViewModel();
+
+            // Get line items grouped by product id, including count
+            var counter = from product in _context.Product
+                          group product by product.ProductTypeId into grouped
+                          select new { grouped.Key, myCount = grouped.Count() };
+
+            // Build list of Product instances for display in view
+            model.GroupedProducts = await(
+                from t in _context.ProductType
+                join p in _context.Product
+                on t.ProductTypeId equals p.ProductTypeId
+                group new { t, p } by new { t.ProductTypeId, t.Type } into grouped
+                select new GroupedProducts
+                {
+                    TypeId = grouped.Key.ProductTypeId,
+                    TypeName = grouped.Key.Type,
+                    ProductCount = grouped.Select(x => x.p.ProductId).Count(),
+                    Products = grouped.Select(x => x.p).Take(3)
+                }).ToListAsync();
+
+            return View(model);
         }
 
         // GET: ProductTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+       public async Task<IActionResult> Details([FromRoute]int? id)
         {
+
+            // If no id was in the route, return 404
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productType = await _context.ProductType
-                .SingleOrDefaultAsync(m => m.ProductTypeId == id);
+            /*
+                Create instance of view model
+             */
+            ProductTypeDetailViewModel model = new ProductTypeDetailViewModel();
+
+            /*
+                Write LINQ statement to get requested product type
+             */
+            
+            var productType = _context.ProductType.Single(t => t.ProductTypeId == id);
+
+            // If product not found, return 404
             if (productType == null)
             {
                 return NotFound();
             }
 
-            return View(productType);
+            /*
+                Add corresponding products to the view model
+             */
+            model.Products = await _context.Product.Where(p => p.ProductTypeId == id).ToListAsync();
+
+            // Add the product type to the view model
+            model.ProductType = productType;
+
+            return View(model);
         }
 
         // GET: ProductTypes/Create

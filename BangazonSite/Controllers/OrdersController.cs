@@ -9,6 +9,7 @@ using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
 using BangazonSite.Models.OrderViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BangazonSite.Controllers
@@ -26,7 +27,7 @@ namespace BangazonSite.Controllers
 
         // This task retrieves the currently authenticated user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
+        
         // GET: Orders
         [Authorize]
         public async Task<IActionResult> Index()
@@ -91,7 +92,52 @@ namespace BangazonSite.Controllers
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "AccountNumber", order.PaymentTypeId);
             return View(order);
         }
+        // This method creates new instance of order
+        public async Task<Order> CreateOrder()
+        {
+            var order = new Order();
+            order.User = await GetCurrentUserAsync();
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+            return order;
+        }
 
+        // POST: Orders/BuyProduct/5
+        [Authorize]
+        public async Task<IActionResult> BuyProduct(int qty, int? id)
+        {
+            var product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            product.Quantity = product.Quantity - qty;
+            _context.Update(product);
+
+            //This method is expecting qty and product id
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //once it gets that info it will try to create order
+            var user = await GetCurrentUserAsync();
+            var order = await _context.Order.SingleOrDefaultAsync(m => m.User.Id == user.Id && m.PaymentType == null);
+            if (order == null)
+            {
+                order = await CreateOrder();
+            }
+            //then it will try to add order to the join table in OrderProduct table
+            for(var i = 0; i < qty; i++)
+            {
+                var orderProduct = new OrderProduct();
+                orderProduct.Order = order;
+                orderProduct.Product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == id);
+                _context.Add(orderProduct);
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
         // GET: Orders/Edit/5
         
         [Authorize]

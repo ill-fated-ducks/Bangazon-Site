@@ -194,7 +194,7 @@ namespace BangazonSite.Data
                         Price = 1,
                         Quantity = 5,
                         DateCreated = DateTime.Today,
-                        LocalDeliveryCity = null,
+                        LocalDeliveryCity = "",
                         ImagePath = null,
                         IsActive = true,
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "smith@bangazon.com")
@@ -209,7 +209,7 @@ namespace BangazonSite.Data
                         Price = 56.34,
                         Quantity = 6,
                         DateCreated = DateTime.Today,
-                        LocalDeliveryCity = null,
+                        LocalDeliveryCity = "",
                         ImagePath = null,
                         IsActive = true,
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "jacques@bangazon.com")
@@ -351,6 +351,56 @@ namespace BangazonSite.Data
                         IsActive = true,
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "smith@bangazon.com")
                         
+                    }
+                );
+                context.SaveChanges();
+            }
+
+            if (context.Order.Any())
+            {
+                // Already seeded
+            }
+            else
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                context.Order.AddRange(
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = 1
+                    },
+
+                    new Order
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        PaymentTypeId = 1
+                    }
+                );
+                context.SaveChanges();
+            }
+
+            if (context.PaymentType.Any())
+            {
+                // Already seeded
+            }
+            else
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                context.PaymentType.AddRange(
+                    new PaymentType
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        IsActive = true,
+                        AccountNumber = "1234123412341234",
+                        Type = "Outdoors"
+                    },
+
+                    new PaymentType
+                    {
+                        User = userStore.Users.First<ApplicationUser>(u => u.UserName == "wakka@bangazon.com"),
+                        IsActive = true,
+                        AccountNumber = "1234123412341234",
+                        Type = "Vida"
                     }
                 );
                 context.SaveChanges();
