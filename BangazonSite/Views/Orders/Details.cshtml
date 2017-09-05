@@ -39,7 +39,9 @@
                         <td>
                             <h5>@p.Product.Price</h5>
                         </td>
-                        <td><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Model.Order.OrderId">Delete</a></td>
+                        @if (@Model.Order.PaymentTypeId == null)
+                        { <td><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Model.Order.OrderId">Delete</a></td> }
+                        
                     </tr>
                     break;
                 }
@@ -48,8 +50,14 @@
     </table>
 </div>
 <div>
-    <a class="btn btn-default" asp-action="Complete" asp-route-id="@Model.Order.OrderId">Complete</a> |
-    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Order.OrderId">Cancel Order</a>
+    @if (@Model.Order.PaymentTypeId == null)
+    {
+        <a class="btn btn-default" asp-action="Complete" asp-route-id="@Model.Order.OrderId">Complete</a> ;
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Order.OrderId">Cancel Order</a>
+
+    }
+
+    
 </div>
 <div>
     <a asp-action="Index">Back to List</a>
