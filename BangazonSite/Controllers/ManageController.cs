@@ -89,6 +89,46 @@ namespace BangazonSite.Controllers
 
         }
 
+        // Get: /Manage/EditAccountInfo
+        [HttpGet]
+        public async Task<IActionResult> EditAccountInfo()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+            
+
+            return View(user);
+        }
+
+        //Post: /Manage/EditAcountInfo
+        [HttpPost]
+        public async Task<IActionResult> EditAccountInfo(ApplicationUser edditedUser) //pass new model
+        {
+            
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            user.FirstName = edditedUser.FirstName;
+            user.LastName = edditedUser.LastName;
+            user.Address = edditedUser.Address;
+            user.City = edditedUser.City;
+            user.State = edditedUser.State;
+            user.Zip = edditedUser.Zip;
+
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Index");
+        }
+
         //
         // GET: /Manage/AddPhoneNumber
         public IActionResult AddPhoneNumber()
