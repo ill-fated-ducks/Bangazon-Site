@@ -14,6 +14,7 @@ namespace BangazonSite.Controllers
 {
     public class ProductsController : Controller
     {
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
