@@ -7,6 +7,8 @@
 
 <h2>Shopping Cart</h2>
 
+
+
 <div>
     <h4>Order @Html.DisplayFor(model => model.Order.OrderId)</h4>
     <hr />
@@ -24,11 +26,12 @@
                 </th>
             </tr>
         </thead>
-        <tbody>        
+        <tbody>
             @foreach (var product in groupedProduct)
             {
                 foreach (var p in product)
                 {
+
                     <tr>
                         <td>
                             <h5>@p.Product.Title</h5>
@@ -40,8 +43,16 @@
                             <h5>@p.Product.Price</h5>
                         </td>
                         @if (@Model.Order.PaymentTypeId == null)
-                        { <td><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Model.Order.OrderId">Delete</a></td> }
-                        
+                        {
+                            <td>
+                                <form asp-action="DeleteProduct" asp-route-id="@p.OrderProductId">
+                                    <div class="form-group">
+                                        <input type="submit" value="Delete" class="btn btn-danger" />
+                                    </div>
+                                </form>
+                            </td>
+                        }
+
                     </tr>
                     break;
                 }
@@ -49,11 +60,12 @@
         </tbody>
     </table>
 </div>
+
 <div>
     @if (@Model.Order.PaymentTypeId == null)
     {
         <a class="btn btn-default" asp-action="Complete" asp-route-id="@Model.Order.OrderId">Complete</a> ;
-        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Order.OrderId">Cancel Order</a>
+        <span>|</span> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Order.OrderId">Cancel Order</a>
 
     }
 

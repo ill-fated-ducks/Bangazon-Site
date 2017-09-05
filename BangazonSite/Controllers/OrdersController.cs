@@ -185,14 +185,28 @@ namespace BangazonSite.Controllers
             var orderProducts = await _context.OrderProduct.Where(p => p.OrderId == id).ToListAsync();
 
             foreach (var p in orderProducts)
-                {
-                    _context.OrderProduct.Remove(p);
-                }
+            {
+                _context.OrderProduct.Remove(p);
+            }
 
             var order = await _context.Order.SingleOrDefaultAsync(m => m.OrderId == id);
             _context.Order.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        // GET: Orders/DeleteOrderProduct/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            
+            var orderProduct = await _context.OrderProduct.SingleOrDefaultAsync(p => p.OrderProductId == id);
+
+            _context.OrderProduct.Remove(orderProduct);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new {id = orderProduct.OrderId});
         }
 
         private bool OrderExists(int id)
