@@ -35,7 +35,15 @@ namespace BangazonSite.Controllers
             //once it gets that info it will try to create order
             var user = await GetCurrentUserAsync();
             var userProducts = _context.Product.Where(m => m.User.Email == user.Email);
-   
+
+            await (from product in _context.Product
+                   join op in _context.OrderProduct
+                   on product.ProductId equals op.ProductId
+                   join o in _context.Order
+                   on op.OrderId equals o.OrderId
+                   where o.PaymentTypeId == null
+                   select product).ToListAsync();            
+
             return View(await userProducts.ToListAsync());
         }
 
@@ -198,19 +206,17 @@ namespace BangazonSite.Controllers
             //If it throws exception it will catch it and tries to remove that product from other tables
             catch (Exception)
             {
-                var ordered = _context.OrderProduct.Where(li => li.ProductId == id);
-
                 // On an open order?
-                var productOnOpenOrder = from product in _context.Product
+                var productOnOpenOrder = await (from product in _context.Product
                                          join op in _context.OrderProduct
                                          on product.ProductId equals op.ProductId
                                          join o in _context.Order
                                          on op.OrderId equals o.OrderId
                                          where o.PaymentTypeId == null
-                                         select product;
+                                         select product).ToListAsync();
                                          
   
-                if (productOnOpenOrder != null)
+                if (productOnOpenOrder.Count > 0)
                 {
                     // Get all rows in OrderProduct with this product
                     var orderProduct = _context.OrderProduct.Where(li => li.ProductId == id);
@@ -225,7 +231,7 @@ namespace BangazonSite.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Sold");
+                    return RedirectToAction("Index");
                 }
             }
             return RedirectToAction("Index");
