@@ -1,4 +1,4 @@
-@model BangazonSite.Models.Product
+@model BangazonSite.Models.ProductViewModels.ProductCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,61 +12,54 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <label asp-for="Product.Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Product.Title" class="form-control" />
+                <span asp-validation-for="Product.Title" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <label asp-for="Product.Price" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="ProductTypeId" class="col-md-2 control-label"></label>
+            <label asp-for="Product.ProductTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="ProductTypeId" class="form-control" asp-items="ViewBag.ProductTypeId"></select>
+                <select asp-for="Product.ProductTypeId" class="form-control" asp-items="ViewBag.ProductTypeId"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="Product.Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="ImagePath" class="col-md-2 control-label"></label>
+            <label asp-for="Product.Quantity" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="ImagePath" class="form-control" />
-                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                <input asp-for="Product.Quantity" class="form-control" />
+                <span asp-validation-for="Product.Quantity" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Quantity" class="col-md-2 control-label"></label>
+            <label asp-for="Product.LocalDeliveryCity" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="LocalDeliveryCity" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="LocalDeliveryCity" class="form-control" />
-                <span asp-validation-for="LocalDeliveryCity" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input asp-for="Product.LocalDeliveryCity" class="form-control" />
+                <span asp-validation-for="Product.LocalDeliveryCity" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="ImagePath">Upload Image:</label>
             <input asp-for="ImagePath" class="form-control" type="file" name="image" id="image" accept="image/*" />
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
     </div>
 </form>

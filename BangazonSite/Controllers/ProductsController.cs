@@ -27,6 +27,7 @@ namespace BangazonSite.Controllers
         {
             _context = context;
             _userManager = userManager;
+            _environment = environment;
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
@@ -86,10 +87,26 @@ namespace BangazonSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateViewModel model)
         {
-            ModelState.Remove("User");
+            ModelState.Remove("Product.User");
 
             if (ModelState.IsValid)
             {
+
+                long size = 0;
+                foreach (var file in model.ImagePath)
+                {
+                    var filename = ContentDispositionHeaderValue
+                                    .Parse(file.ContentDisposition)
+                                    .FileName
+                                    .Trim('"');
+                    filename = _environment.WebRootPath + $@"\products\{file.FileName.Split('\\').Last()}";
+                    size += file.Length;
+                    using (var fileStream = new FileStream(filename, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                        model.Product.ImagePath = $@"\products\{file.FileName.Split('\\').Last()}";
+                    }
+                }
 
                 // Get current user
                 var user = await GetCurrentUserAsync();
