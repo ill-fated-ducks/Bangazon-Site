@@ -194,7 +194,7 @@ namespace BangazonSite.Data
                         Price = 1,
                         Quantity = 5,
                         DateCreated = DateTime.Today,
-                        LocalDeliveryCity = null,
+                        LocalDeliveryCity = "",
                         ImagePath = null,
                         IsActive = true,
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "smith@bangazon.com")
@@ -209,7 +209,7 @@ namespace BangazonSite.Data
                         Price = 56.34,
                         Quantity = 6,
                         DateCreated = DateTime.Today,
-                        LocalDeliveryCity = null,
+                        LocalDeliveryCity = "",
                         ImagePath = null,
                         IsActive = true,
                         User = userStore.Users.First<ApplicationUser>(u => u.UserName == "jacques@bangazon.com")
@@ -405,7 +405,7 @@ namespace BangazonSite.Data
                 );
                 context.SaveChanges();
             }
-
+          
         }
 
     }
