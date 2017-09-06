@@ -9,6 +9,7 @@ using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
 using Bangazon.Models.ProductViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BangazonSite.Controllers
 {
@@ -26,11 +27,24 @@ namespace BangazonSite.Controllers
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        // GET: Products
+        // GET: UserProducts
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Product.Include(p => p.ProductType);
-            return View(await applicationDbContext.ToListAsync());
+           
+            //once it gets that info it will try to create order
+            var user = await GetCurrentUserAsync();
+            var userProducts = _context.Product.Where(m => m.User.Email == user.Email);
+
+            await (from product in _context.Product
+                   join op in _context.OrderProduct
+                   on product.ProductId equals op.ProductId
+                   join o in _context.Order
+                   on op.OrderId equals o.OrderId
+                   where o.PaymentTypeId == null
+                   select product).ToListAsync();            
+
+            return View(await userProducts.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -154,6 +168,7 @@ namespace BangazonSite.Controllers
             ViewData["ProductTypeId"] = new SelectList(_context.Set<ProductType>(), "ProductTypeId", "Type", product.ProductTypeId);
             return View(product);
         }
+       
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -179,11 +194,48 @@ namespace BangazonSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
-            _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            try
+            {
+                //This method tries to delete product from the database, if product is added to the order it will throw exception
+                var products = await _context.Product.SingleOrDefaultAsync(m => m.ProductId == id);
+                _context.Product.Remove(products);
+
+                await _context.SaveChangesAsync();
+
+            }
+            //If it throws exception it will catch it and tries to remove that product from other tables
+            catch (Exception)
+            {
+                // On an open order?
+                var productOnOpenOrder = await (from product in _context.Product
+                                         join op in _context.OrderProduct
+                                         on product.ProductId equals op.ProductId
+                                         join o in _context.Order
+                                         on op.OrderId equals o.OrderId
+                                         where o.PaymentTypeId == null
+                                         select product).ToListAsync();
+                                         
+  
+                if (productOnOpenOrder.Count > 0)
+                {
+                    // Get all rows in OrderProduct with this product
+                    var orderProduct = _context.OrderProduct.Where(li => li.ProductId == id);
+
+                    // Delete all rows in OrderProduct
+                    foreach (OrderProduct i in orderProduct)
+                    {
+                        _context.OrderProduct.Remove(i);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
             return RedirectToAction("Index");
-        }
+}
 
         private bool ProductExists(int id)
         {
