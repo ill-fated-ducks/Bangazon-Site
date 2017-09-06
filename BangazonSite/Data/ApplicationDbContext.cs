@@ -30,5 +30,7 @@ namespace BangazonSite.Data
         public DbSet<BangazonSite.Models.Order> Order { get; set; }
 
         public DbSet<BangazonSite.Models.ProductType> ProductType { get; set; }
+        
+        public DbSet<BangazonSite.Models.OrderProduct> OrderProduct { get; set; }
     }
 }
