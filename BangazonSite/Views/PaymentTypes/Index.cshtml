@@ -3,8 +3,10 @@
 @{
     ViewData["Title"] = "Index";
 }
+@inject UserManager<ApplicationUser> UserManager
 
-<h2>Welcome to the Payments Options, user</h2>
+<h2>Welcome to the Payments Options, @UserManager.GetUserName(User)
+</h2>
 
 <p>
     <a asp-action="Create">Add New Payment Type</a>

@@ -1,0 +1,84 @@
+@model BangazonSite.Models.ProductViewModels.MyProductsOrderVM
+
+    @{
+        ViewData["Title"] = "MyProducts";
+    }
+
+    <h2>MyProducts</h2>
+
+    <table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h4>Title</h4>
+            </th>
+            <th>
+                <h4>Inventory</h4>
+            </th>
+            <th>
+                <h4>Sold</h4>
+            </th>
+            <th>
+                <h4>Price</h4>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.UserProducts.Count() == 0)
+        {
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ProductId">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> | 
+                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            @foreach (var item in Model.UserProducts)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="@item.ProductId">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderedCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                </tr>
+            }
+
+
+        }
+    </tbody>
+</table>
+

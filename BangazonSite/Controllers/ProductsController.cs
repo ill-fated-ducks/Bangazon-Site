@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using BangazonSite.Data;
 using BangazonSite.Models;
 using Microsoft.AspNetCore.Identity;
-using Bangazon.Models.ProductViewModels;
+using BangazonSite.Models.ProductViewModels;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace BangazonSite.Controllers
 {
@@ -25,10 +26,12 @@ namespace BangazonSite.Controllers
             _userManager = userManager;
         }
 
+        // Retrieve currently logged in user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: UserProducts
         [Authorize]
+
         public async Task<IActionResult> Index()
         {
            
@@ -236,6 +239,17 @@ namespace BangazonSite.Controllers
             }
             return RedirectToAction("Index");
 }
+
+        // Get: Products/MyProducts
+        // This method was authured by Jordan Dhaenens
+        // This method returns a seller's listed products and stats
+        public async Task<IActionResult> MyProducts()
+        {
+            var user = await GetCurrentUserAsync();
+            MyProductsOrderVM model = new MyProductsOrderVM(_context, user);
+
+            return View(model);
+        }
 
         private bool ProductExists(int id)
         {
