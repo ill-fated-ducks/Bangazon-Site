@@ -32,12 +32,14 @@ namespace BangazonSite.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
+
             // Create new instance of the view model
             OrderListViewModel model = new OrderListViewModel();
 
             // Set the properties of the view model
             model.Orders = await _context.Order.Include(o => o.User).Include(o => o.PaymentType).ToListAsync();
             return View(model);
+
         }
 
 

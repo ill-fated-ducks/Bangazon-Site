@@ -10,6 +10,22 @@
     <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>First Name</dt>
+        <dd>@Model.User.FirstName</dd>
+        <dt>Last Name</dt>
+        <dd>@Model.User.LastName</dd>
+        <dt>Address</dt>
+        <dd>@Model.User.Address</dd>
+        <dt>City</dt>
+        <dd>@Model.User.City</dd>
+        <dt>State</dt>
+        <dd>@Model.User.State</dd>
+        <dt>Phone Number</dt>
+        <dd>@Model.User.Phone</dd>
+        <a asp-controller="Manage" asp-action="EditAccountInfo" class="btn-bracketed">Edit Account Info</a>
+
+    </dl>
+    <dl class="dl-horizontal">
         <dt>Password:</dt>
         <dd>
             @if (Model.HasPassword)
